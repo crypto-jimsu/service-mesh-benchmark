@@ -19,8 +19,6 @@ spec:
       labels:
         app: emoji-svc
     spec:
-      nodeSelector:
-        role: workload
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534

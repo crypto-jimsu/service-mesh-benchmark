@@ -1,6 +1,24 @@
 #!/bin/bash
 
 script_location="$(dirname "${BASH_SOURCE[0]}")"
+emojivoto_instances=2
+
+function install_istio_1_12 () {
+    echo "Install Istio version 1.12"
+    istioctl install --set profile=default
+    echo "Successfully install Istio"
+    kubectl get pod -n istio-system -o wide
+    sleep 10
+}
+
+function install_linkerd_stable_2_1_1 () {
+    echo "Install linkerd version stable-2.11.1 "
+    linkerd install | kubectl apply -f -
+    echo "Successfully install linkerd"
+    kubectl get pod -n linkerd -o wide
+    sleep 10
+}
+
 
 function grace() {
     grace=10
@@ -44,12 +62,15 @@ function install_emojivoto() {
 
     echo "Installing emojivoto."
 
-    for num in $(seq 0 1 59); do
+    for num in $(seq 0 1 ${emojivoto_instances}); do
         { 
             kubectl create namespace emojivoto-$num
 
             [ "$mesh" == "istio" ] && \
                 kubectl label namespace emojivoto-$num istio-injection=enabled
+
+            [ "$mesh" == "linkerd" ] && \
+                kubectl annotate namespace emojivoto-$num linkerd.io/inject=enabled
 
             helm install emojivoto-$num --namespace emojivoto-$num \
                              ${script_location}/../configs/emojivoto/
@@ -80,7 +101,7 @@ function restart_emojivoto_pods() {
 function delete_emojivoto() {
     echo "Deleting emojivoto."
 
-    for i in $(seq 0 1 59); do
+    for i in $(seq 0 1 ${emojivoto_instances}); do
         { helm uninstall emojivoto-$i --namespace emojivoto-$i;
           kubectl delete namespace emojivoto-$i --wait; } &
     done
@@ -177,8 +198,6 @@ function istio_extra_cleanup() {
         | sed 's/"istio-finalizer.install.istio.io"//' \
         | kubectl apply -f -
 
-    lokoctl component delete experimental-istio-operator \
-                                                --confirm --delete-namespace
     kubectl delete --now --timeout=10s $(kubectl get clusterroles -o name | grep istio)
     kubectl delete --now --timeout=10s $(kubectl get clusterrolebindings -o name | grep istio)
     kubectl delete --now --timeout=10s  $(kubectl get crd -o name | grep istio)
@@ -190,25 +209,39 @@ function istio_extra_cleanup() {
 # --
 
 function delete_istio() {
-    lokoctl component delete experimental-istio-operator --delete-namespace --confirm
+    echo "Start delete Istio"
+    yes | istioctl x uninstall --purge
     [ $? -ne 0 ] && {
         # this sometimes fails with a namespace error, works the 2nd time
         sleep 5
-        lokoctl component delete experimental-istio-operator --delete-namespace --confirm; }
+        yes | istioctl x uninstall --purge; }
 
-    grace "kubectl get namespaces | grep istio-operator" 1
+    grace "kubectl get namespaces | grep istio-system" 1
     kubectl delete namespace istio-system  --now --timeout=30s
     for i in $(seq 20); do
         istio_extra_cleanup
         kubectl get namespaces | grep istio-system || break
         sleep 1
     done
+    echo "Deleted Istio"
 }
 # --
 
+function delete_linkerd() {
+    echo "Start delete linkerd"
+    linkerd viz uninstall | kubectl delete -f -
+    linkerd uninstall | kubectl delete -f -
+
+    grace "kubectl get namespaces | grep linkerd" 1
+    kubectl delete namespace linkerd  --now --timeout=30s
+    echo "Deleted linkerd"
+    sleep 5
+}
+
+# --
 function run_benchmarks() {
-    for rps in 500 1000 1500 2000 2500 3000 3500 4000 4500 5000 5500; do
-        for repeat in 1 2 3 4 5; do
+    for rps in 500 600; do #1000 1500 2000 2500 3000 3500 4000 4500 5000 5500; do
+        for repeat in 1; do # 2 3 4 5; do
 
             echo "########## Run #$repeat w/ $rps RPS"
 
@@ -219,11 +252,11 @@ function run_benchmarks() {
 
             echo " +++ linkerd benchmark"
             echo "Installing linkerd"
-            lokoctl component apply experimental-linkerd
+            install_linkerd_stable_2_1_1
             [ $? -ne 0 ] && {
                 # this sometimes fails with a namespace error, works the 2nd time
                 sleep 5
-                lokoctl component apply experimental-linkerd; }
+                install_linkerd_stable_2_1_1; }
 
             grace "kubectl get pods --all-namespaces | grep linkerd | grep -v Running"
 
@@ -232,14 +265,14 @@ function run_benchmarks() {
             delete_emojivoto
 
             echo "Removing linkerd"
-            lokoctl component delete experimental-linkerd --delete-namespace --confirm
+            delete_linkerd
             kubectl delete namespace linkerd --now --timeout=30s
             grace "kubectl get namespaces | grep linkerd"
 
             echo " +++ istio benchmark"
             echo "Installing istio"
-            lokoctl component apply experimental-istio-operator
-            grace "kubectl get pods --all-namespaces | grep istio-operator | grep -v Running"
+            install_istio_1_12
+            grace "kubectl get pods --all-namespaces | grep istiod | grep -v Running"
             sleep 30    # extra sleep to let istio initialise. Sidecar injection will
                         #  fail otherwise.
 
@@ -251,8 +284,8 @@ function run_benchmarks() {
                 echo " !!! Emojivoto is not fully meshed."
                 echo "     Deleting and re-deploying Istio."
                 delete_istio
-                lokoctl component apply experimental-istio-operator
-                grace "kubectl get pods --all-namespaces | grep istio-operator | grep -v Running"
+                install_istio_1_12
+                grace "kubectl get pods --all-namespaces | grep istio-system | grep -v Running"
                 sleep 30
                 echo " !!!  Restarting all Emojivoto pods."
                 restart_emojivoto_pods
