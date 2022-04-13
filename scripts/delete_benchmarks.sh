@@ -1,5 +1,9 @@
 #!/bin/bash
+<<<<<<< HEAD
 emojivoto_instances=5
+=======
+emojivoto_instances=2
+>>>>>>> 1b317d673526c909c16e0b4cbc49238329d38886
 
 function grace() {
     grace=10
