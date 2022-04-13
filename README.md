@@ -5,7 +5,6 @@ This is v2.0 release of our benchmark automation suite.
 Please refer to the [1.0 release](tree/release-1.0) for automation discussed in our [2019 blog post](https://kinvolk.io/blog/2019/05/kubernetes-service-mesh-benchmarking/).
 
 # Customize for my project
-```
 Before you start running, make sure the following things be instlled already:
 - helm https://helm.sh/docs/intro/install/
 ```
@@ -85,10 +84,10 @@ ip-192-168-81-153.ec2.internal    Ready    <none>   121m   v1.19.15-eks-9c63c4
 $ kubectl get node -l role=benchmark
 NAME                              STATUS   ROLES    AGE    VERSION
 ip-192-168-114-150.ec2.internal   Ready    <none>   121m   v1.19.15-eks-9c63c4
-
+```
 
 - Set up grafana dashboard, pleas follow https://github.com/crypto-jimsu/service-mesh-benchmark#upload-grafana-dashboard
-```
+
 
 
 # Content

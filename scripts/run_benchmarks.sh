@@ -84,7 +84,7 @@ function install_emojivoto() {
 
 function restart_emojivoto_pods() {
 
-    for num in $(seq 0 1 59); do
+    for num in $(seq 0 1 ${emojivoto_instances}); do
         local ns="emojivoto-$num"
         echo "Restarting pods in $ns"
         {  local pods="$(kubectl get -n "$ns" pods | grep -vE '^NAME' | awk '{print $1}')"
@@ -211,10 +211,10 @@ function istio_extra_cleanup() {
 function delete_istio() {
     echo "Start delete Istio"
     yes | istioctl x uninstall --purge
-    [ $? -ne 0 ] && {
-        # this sometimes fails with a namespace error, works the 2nd time
-        sleep 5
-        yes | istioctl x uninstall --purge; }
+    # [ $? -ne 0 ] && {
+    #     # this sometimes fails with a namespace error, works the 2nd time
+    #     sleep 5
+    #     yes | istioctl x uninstall --purge; }
 
     grace "kubectl get namespaces | grep istio-system" 1
     kubectl delete namespace istio-system  --now --timeout=30s
@@ -240,7 +240,7 @@ function delete_linkerd() {
 
 # --
 function run_benchmarks() {
-    for rps in 500 600; do #1000 1500 2000 2500 3000 3500 4000 4500 5000 5500; do
+    for rps in 50 ; do  #500 600 1000 1500 2000 2500 3000 3500 4000 4500 5000 5500; do
         for repeat in 1; do # 2 3 4 5; do
 
             echo "########## Run #$repeat w/ $rps RPS"
