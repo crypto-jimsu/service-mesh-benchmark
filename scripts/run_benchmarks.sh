@@ -200,12 +200,6 @@ function run_bench() {
             | grep  -v "1/1"; do
         sleep 1
     done
-
-    if asksure; then
-        echo "Okay"
-    else
-        echo "Pfff..."
-    fi
     kubectl logs -n metrics-merger jobs/wrk2-metrics-merger
 
     echo "Cleaning up."
