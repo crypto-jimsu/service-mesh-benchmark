@@ -1,2 +1,2 @@
-prometheusServiceUrl: "http://prometheus-operator-kube-p-prometheus.monitoring:9090"
-pushgatewayURL: "pushgateway.monitoring:9091"
+prometheusServiceUrl: "http://prometheus-server.monitoring.svc.cluster.local:80"
+pushgatewayURL: "prometheus-pushgateway.monitoring.svc.cluster.local:9091"

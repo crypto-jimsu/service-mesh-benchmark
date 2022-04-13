@@ -5,7 +5,7 @@ emojivoto_instances=2
 
 function install_istio_1_12 () {
     echo "Install Istio version 1.12"
-    istioctl install --set profile=default
+    yes | istioctl install --set profile=default
     echo "Successfully install Istio"
     kubectl get pod -n istio-system -o wide
     sleep 10
@@ -72,8 +72,7 @@ function install_emojivoto() {
             [ "$mesh" == "linkerd" ] && \
                 kubectl annotate namespace emojivoto-$num linkerd.io/inject=enabled
 
-            helm install emojivoto-$num --namespace emojivoto-$num \
-                             ${script_location}/../configs/emojivoto/
+            helm install emojivoto-$num --namespace emojivoto-$num ./configs/emojivoto/
          } &
     done
 
@@ -125,13 +124,14 @@ function install_benchmark() {
     local duration=600
     local init_delay=10
 
-    local app_count=$(kubectl get namespaces | grep emojivoto | wc -l)
+    local app_count="$(kubectl get namespaces | grep emojivoto | wc -l | xargs)"
 
     echo "Running $mesh benchmark"
     kubectl create ns benchmark
     [ "$mesh" == "istio" ] && \
         kubectl label namespace benchmark istio-injection=enabled
     if [ "$mesh" != "bare-metal" ] ; then
+        echo "mesh: ${mesh}, app_count: ${app_count}, rps=${rps}, duration=${duration}, init_delay=${init_delay}"
         helm install benchmark --namespace benchmark \
             --set wrk2.serviceMesh="$mesh" \
             --set wrk2.app.count="$app_count" \
@@ -139,15 +139,16 @@ function install_benchmark() {
             --set wrk2.duration=$duration \
             --set wrk2.connections=128 \
             --set wrk2.initDelay=$init_delay \
-            ${script_location}/../configs/benchmark/
+            ./configs/benchmark/
     else
+        echo "app_count: ${app_count}, rps=${rps}, duration=${duration}, init_delay=${init_delay}"
         helm install benchmark --namespace benchmark \
             --set wrk2.app.count="$app_count" \
             --set wrk2.RPS="$rps" \
             --set wrk2.duration=$duration \
             --set wrk2.initDelay=$init_delay \
             --set wrk2.connections=128 \
-            ${script_location}/../configs/benchmark/
+            ./configs/benchmark/
     fi
 }
 # --
@@ -170,8 +171,7 @@ function run_bench() {
     done
 
     echo "Benchmark concluded. Updating summary metrics."
-    helm install --create-namespace --namespace metrics-merger \
-        metrics-merger ${script_location}/../configs/metrics-merger/
+    helm install --create-namespace --namespace metrics-merger metrics-merger ./configs/metrics-merger/
     sleep 5
     while kubectl get jobs -n metrics-merger \
             | grep wrk2-metrics-merger \
@@ -218,11 +218,11 @@ function delete_istio() {
 
     grace "kubectl get namespaces | grep istio-system" 1
     kubectl delete namespace istio-system  --now --timeout=30s
-    for i in $(seq 20); do
-        istio_extra_cleanup
-        kubectl get namespaces | grep istio-system || break
-        sleep 1
-    done
+    # for i in $(seq 20); do
+    #     istio_extra_cleanup
+    #     kubectl get namespaces | grep istio-system || break
+    #     sleep 1
+    # done
     echo "Deleted Istio"
 }
 # --
