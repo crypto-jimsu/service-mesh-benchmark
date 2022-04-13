@@ -240,8 +240,8 @@ function delete_linkerd() {
 
 # --
 function run_benchmarks() {
-    for rps in 50 ; do  #500 600 1000 1500 2000 2500 3000 3500 4000 4500 5000 5500; do
-        for repeat in 1; do # 2 3 4 5; do
+    for rps in 500 600; do  #  1000 1500 2000 2500 3000 3500 4000 4500 5000 5500; do
+        for repeat in 1 2 3 4 5; do
 
             echo "########## Run #$repeat w/ $rps RPS"
 
@@ -253,10 +253,10 @@ function run_benchmarks() {
             echo " +++ linkerd benchmark"
             echo "Installing linkerd"
             install_linkerd_stable_2_1_1
-            [ $? -ne 0 ] && {
-                # this sometimes fails with a namespace error, works the 2nd time
-                sleep 5
-                install_linkerd_stable_2_1_1; }
+            # [ $? -ne 0 ] && {
+            #     # this sometimes fails with a namespace error, works the 2nd time
+            #     sleep 5
+            #     install_linkerd_stable_2_1_1; }
 
             grace "kubectl get pods --all-namespaces | grep linkerd | grep -v Running"
 
