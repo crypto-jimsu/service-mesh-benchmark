@@ -4,6 +4,93 @@ This is v2.0 release of our benchmark automation suite.
 
 Please refer to the [1.0 release](tree/release-1.0) for automation discussed in our [2019 blog post](https://kinvolk.io/blog/2019/05/kubernetes-service-mesh-benchmarking/).
 
+# Customize for my project
+```
+Before you start running, make sure the following things be instlled already:
+- helm https://helm.sh/docs/intro/install/
+```
+### Verify helm
+$ helm version
+version.BuildInfo{Version:"v3.8.1", GitCommit:"5cb9af4b1b271d11d7a97a71df3ac337dd94ad37", GitTreeState:"clean", GoVersion:"go1.17.8"}
+```
+- istioctl version 1.12.5 https://istio.io/latest/docs/setup/getting-started/#download
+```
+### Verfiy istioctl install
+$ istioctl version
+no running Istio pods in "istio-system"
+1.12.5
+```
+- linkerd version stable-2.11.1 https://linkerd.io/2.11/getting-started/
+```
+### Verfiy linkerd install
+$ linkerd version
+Client version: stable-2.11.1
+Server version: unavailable
+```
+
+- Prometheus & Grafana
+```
+kubectl create namespace monitoring
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm upgrade -i prometheus prometheus-community/prometheus \
+    --namespace prometheus \
+    --set alertmanager.persistentVolume.storageClass="gp2",server.persistentVolume.storageClass="gp2"
+
+
+cat << EoF > ~/Desktop/grafana.yaml
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-server.monitoring.svc.cluster.local
+      access: proxy
+      isDefault: true
+EoF
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm install grafana grafana/grafana \
+    --namespace monitoring \
+    --set persistence.storageClassName="gp2" \
+    --set persistence.enabled=true \
+    --set adminPassword='EKS!sAWSome' \   # <- Just for tesing !!!!!!!! You can change it for another value
+    --values ~/Desktop/grafana.yaml
+
+### Verfiy Prometheus & Grafana 
+$ kubectl get pod -n monitoring
+NAME                                             READY   STATUS    RESTARTS   AGE
+grafana-85966c76d7-g99hn                         1/1     Running   0          8h
+prometheus-alertmanager-565889745c-wqtz2         2/2     Running   0          8h
+prometheus-kube-state-metrics-7c6ffc7686-dkr4n   1/1     Running   0          8h
+prometheus-node-exporter-c95nb                   1/1     Running   0          117m
+prometheus-node-exporter-gmfhb                   1/1     Running   0          117m
+prometheus-node-exporter-m5cxk                   1/1     Running   0          117m
+prometheus-node-exporter-mvqlg                   1/1     Running   0          117m
+prometheus-node-exporter-z2sj7                   1/1     Running   0          118m
+prometheus-pushgateway-5f9b4489f-7lx8f           1/1     Running   0          8h
+prometheus-server-5bd98fd4d4-fpn6b               2/2     Running   0          8h
+```
+
+- Worker nodes are labeled with `role: workload` and `role: benchmark`
+```
+### Verify worker node
+$ kubectl get node -l role=workload
+NAME                              STATUS   ROLES    AGE    VERSION
+ip-192-168-101-168.ec2.internal   Ready    <none>   121m   v1.19.15-eks-9c63c4
+ip-192-168-116-144.ec2.internal   Ready    <none>   121m   v1.19.15-eks-9c63c4
+ip-192-168-66-33.ec2.internal     Ready    <none>   121m   v1.19.15-eks-9c63c4
+ip-192-168-81-153.ec2.internal    Ready    <none>   121m   v1.19.15-eks-9c63c4
+
+$ kubectl get node -l role=benchmark
+NAME                              STATUS   ROLES    AGE    VERSION
+ip-192-168-114-150.ec2.internal   Ready    <none>   121m   v1.19.15-eks-9c63c4
+
+
+- Set up grafana dashboard, pleas follow https://github.com/crypto-jimsu/service-mesh-benchmark#upload-grafana-dashboard
+```
+
+
 # Content
 
 The suite includes:
@@ -22,7 +109,7 @@ The suite includes:
 
 ## Run a benchmark
 
-Prerequisites:
+Prerequisites (This should not worries, if you make sure the above `Customize for my project` is done):
 - cluster is set up
 - push gateway is installed
 - grafana dashboards are uploaded to Grafana
@@ -58,45 +145,7 @@ instances.
 
 # Creating prerequisites
 ## Set up a cluster
-
-We use [Equinix Metal](https:/metal.equinix.com/) infrastructure to run the benchmark
-on, AWS S3 for sharing cluster state, and AWS Route53 for the clusters' public
-DNS entries. You'll need a Equinix Metal account and respective API token as well as
-an AWS account and accompanying secret key before you can provision a cluster.
-
-You'll also need a recent version of [Lokomotive](https://github.com/kinvolk/lokomotive/releases/).
-
-1. Make the authentication tokens available to the `lokoctl` command.  You can do this in a couple of ways. For example, exporting your authentication tokens:
-   ```
-   export PACKET_AUTH_TOKEN="Your Equinix Metal Auth Token"
-   export AWS_ACCESS_KEY_ID="your access key for AWS"
-   export AWS_SECRET_ACCESS_KEY="your secret for the above access key"
-   ```
-2. Create the Route53 hosted zone that will be used by the cluster. And an S3 bucket and Dynamo tables for storing Lokomotive's state. Check out Lokomotive's documentation for [Using S3 as backend](https://kinvolk.io/docs/lokomotive/latest/configuration-reference/backend/s3/) for how to do this.
-
-3. Create `configs/lokocfg.vars` by copying the example file `configs/lokocfg.vars.example`, and editing its contents.
-   ```
-   metal_project_id = "[ID of the equinix metal project to deploy to]"
-   route53_zone = "[cluster's route53 zone]"
-   state_s3_bucket = "[PRIVATE AWS S3 bucket to share cluster state in]"
-   state_s3_key = "[key in S3 bucket, e.g. cluster name]"
-   state_s3_region = "[AWS S3 region to use]"
-   lock_dynamodb_table = "[DynamoDB table name to use as state lock, e.g. cluster name]"
-   region_private_cidr =  "[Your Equinix Metal region's private CIDR]"
-   ssh_pub_keys = [ "[Your SSH pub keys]" ]
-   ```
-4. Review the benchmark cluster config in `configs/equinix-metal-cluster.lokocfg`
-5. Provision the cluster by running
-   ```
-   $ cd configs
-   configs $ lokoctl cluster apply
-   ```
-
-After provisioning concluded, make sure to run
-```
-$ export KUBECONFIG=assets/cluster-assets/auth/kubeconfig
-```
-to get `kubectl` access to the cluster.
+We use EKS cluster for testing
 
 ## Deploy prometheus push gateway
 
@@ -126,18 +175,12 @@ $ for i in $(seq 10) ; do \
 ```
 
 ### Upload Grafana dashboard
-
-1. Get the Grafana Admin password from the cluster
-   ```
-   $ kubectl -n monitoring get secret prometheus-operator-grafana -o jsonpath='{.data.admin-password}' | base64 -d && echo
-   ```
-2. Forward the Grafana service port from the cluster
+1. Forward the Grafana service port from the cluster
    ```
    $ kubectl -n monitoring port-forward svc/prometheus-operator-grafana 3000:80 &
    ```
-3. Log in to [Grafana](http://localhost:3000/) and create an API key we'll use
-   to upload the dashboard
-4. Upload the dashboard:
+2. Log in to [Grafana](http://localhost:3000/) and create an API key we'll use to upload the dashboard
+3. Upload the dashboard:
    ```
    $ cd dashboard
    dashboard $ ./upload_dashboard.sh "[API KEY]" grafana-wrk2-cockpit.json localhost:3000
