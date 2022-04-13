@@ -26,6 +26,6 @@ spec:
         env:
         - name: PROMETHEUS_URL
           value: {{ .Values.prometheusServiceUrl }}
-        args:
-        - {{ .Values.prometheusServiceUrl }}
-        - {{ .Values.pushgatewayURL }}
+        - name: PushGateway_URL
+          value: {{ .Values.pushgatewayURL }}
+

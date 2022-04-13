@@ -1,5 +1,5 @@
 FROM alpine
-MAINTAINER Kinvolk
+MAINTAINER jim123820
 
 RUN apk add --update --no-cache python3 py-pip
 RUN pip install prometheus-http-client prometheus-client

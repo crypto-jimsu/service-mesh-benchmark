@@ -3,37 +3,13 @@
 script_location="$(dirname "${BASH_SOURCE[0]}")"
 emojivoto_instances=5
 
-function asksure() {
-    echo -n "Are you sure (Y/N)? "
-    while read -r -n 1 -s answer; do
-        if [[ $answer = [YyNn] ]]; then
-            [[ $answer = [Yy] ]] && retval=0
-            [[ $answer = [Nn] ]] && retval=1
-            break
-        fi
-done
-
-echo # just a final linefeed, optics...
-
-return $retval
-}
-
 function install_istio_1_12 () {
     echo "Install Istio version 1.12"
     yes | istioctl install --set profile=default
     echo "Successfully install Istio"
     kubectl get pod -n istio-system -o wide
-    sleep 1
+    sleep 3
 }
-
-function install_linkerd_stable_2_1_1 () {
-    echo "Install linkerd version stable-2.11.1 "
-    linkerd install | kubectl apply -f -
-    echo "Successfully install linkerd"
-    kubectl get pod -n linkerd -o wide
-    sleep 1
-}
-
 
 function grace() {
     grace=3
@@ -49,7 +25,7 @@ function grace() {
 
         if [ $grace -gt 0 ]; then
             sleep 1
-            #echo "wait: $grace s"
+            echo "wait: $grace s"
             grace=$(($grace-1))
             continue
         fi
@@ -83,9 +59,6 @@ function install_emojivoto() {
 
             [ "$mesh" == "istio" ] && \
                 kubectl label namespace emojivoto-$num istio-injection=enabled
-
-            [ "$mesh" == "linkerd" ] && \
-                kubectl annotate namespace emojivoto-$num linkerd.io/inject=enabled
 
             helm install emojivoto-$num --namespace emojivoto-$num ./configs/emojivoto/
          } &
@@ -143,35 +116,18 @@ function install_benchmark() {
 
     echo -e "\n\nRunning $mesh benchmark"
     kubectl create ns benchmark
-    if [ "$mesh" == "istio" ] ; then
+    [ "$mesh" == "istio" ] && \
         kubectl label namespace benchmark istio-injection=enabled
-    fi
-    if [ "$mesh" == "linkerd" ] ; then
-        kubectl annotate namespace benchmark linkerd.io/inject=enabled
-    fi
-
-    if [ "$mesh" != "bare-metal" ] ; then
-        echo -e "\n"
-        echo "mesh: ${mesh}, app_count: ${app_count}, rps=${rps}, duration=${duration}, init_delay=${init_delay}"
-        helm install benchmark --namespace benchmark \
-            --set wrk2.serviceMesh="$mesh" \
-            --set wrk2.app.count="$app_count" \
-            --set wrk2.RPS="$rps" \
-            --set wrk2.duration=$duration \
-            --set wrk2.connections=128 \
-            --set wrk2.initDelay=$init_delay \
-            ./configs/benchmark/
-    else
-        echo -e "\n"
-        echo "app_count: ${app_count}, rps=${rps}, duration=${duration}, init_delay=${init_delay}"
-        helm install benchmark --namespace benchmark \
-            --set wrk2.app.count="$app_count" \
-            --set wrk2.RPS="$rps" \
-            --set wrk2.duration=$duration \
-            --set wrk2.initDelay=$init_delay \
-            --set wrk2.connections=128 \
-            ./configs/benchmark/
-    fi
+    echo "\n"
+    echo "mesh: ${mesh}, app_count: ${app_count}, rps=${rps}, duration=${duration}, init_delay=${init_delay}"
+    helm install benchmark --namespace benchmark \
+        --set wrk2.serviceMesh="$mesh" \
+        --set wrk2.app.count="$app_count" \
+        --set wrk2.RPS="$rps" \
+        --set wrk2.duration=$duration \
+        --set wrk2.connections=128 \
+        --set wrk2.initDelay=$init_delay \
+        ./configs/benchmark/
 }
 # --
 
@@ -194,18 +150,13 @@ function run_bench() {
 
     echo "Benchmark concluded. Updating summary metrics."
     helm install --create-namespace --namespace metrics-merger metrics-merger ./configs/metrics-merger/
-    sleep 2
+    sleep 5
     while kubectl get jobs -n metrics-merger \
             | grep wrk2-metrics-merger \
             | grep  -v "1/1"; do
         sleep 1
     done
 
-    if asksure; then
-        echo "Okay"
-    else
-        echo "Pfff..."
-    fi
     kubectl logs -n metrics-merger jobs/wrk2-metrics-merger
 
     echo "Cleaning up."
@@ -221,70 +172,29 @@ function delete_istio() {
     yes | istioctl x uninstall --purge
     echo "Deleted Istio"
 }
-# --
-
-function delete_linkerd() {
-    echo "Start delete linkerd"
-    linkerd viz uninstall | kubectl delete -f -
-    linkerd uninstall | kubectl delete -f -
-
-    grace "kubectl get namespaces | grep linkerd" 1
-    kubectl delete namespace linkerd  --now --timeout=30s
-    echo "Deleted linkerd"
-    sleep 2
-}
 
 # --
 function run_benchmarks() {
     #for rps in 500 600; do  #  1000 1500 2000 2500 3000 3500 4000 4500 5000 5500; do
     rps=500
-    #for repeat in 1 2 3 4 5; do
-    
-    echo -e "\n\n########## Run #$repeat w/ $rps RPS"
-    echo -e "\n +++ bare metal benchmark +++"
-    echo -e "=================================================="
-    date
-    install_emojivoto bare-metal
-    run_bench bare-metal $rps
-    date
-    echo -e "=================================================="
-    delete_emojivoto
-    
+    for repeat in 1 2 3 4 5; do
 
-    echo -e "\n +++ linkerd benchmark +++"
-    echo -e "=================================================="
-    date
-    echo "Installing linkerd"
-    install_linkerd_stable_2_1_1
-    grace "kubectl get pods --all-namespaces | grep linkerd | grep -v Running"
-    install_emojivoto linkerd
-    run_bench linkerd $rps
-    echo -e "=================================================="
-    date
-    delete_emojivoto
+        echo -e "\n\n########## Run #$repeat w/ $rps RPS"
 
-    echo "Removing linkerd"
-    echo -e "=================================================="
-    delete_linkerd
-    kubectl delete namespace linkerd --now --timeout=30s
-    grace "kubectl get namespaces | grep linkerd"
+        echo -e "\n +++ istio benchmark +++"
+        echo "Installing istio"
+        install_istio_1_12
+        grace "kubectl get pods --all-namespaces | grep istiod | grep -v Running"
+        sleep 30    # extra sleep to let istio initialise. Sidecar injection will
+                    #  fail otherwise.
 
-    echo -e "\n +++ istio benchmark +++"
-    echo "Installing istio"
-    date
-    install_istio_1_12
-    grace "kubectl get pods --all-namespaces | grep istiod | grep -v Running"
+        install_emojivoto istio
+        run_bench istio $rps
+        delete_emojivoto
 
-    install_emojivoto istio
-    run_bench istio $rps
-    date
-    echo -e "=================================================="
-    delete_emojivoto
-
-    echo "Removing istio"
-    delete_istio
-    
-    #done
+        echo "Removing istio"
+        delete_istio
+    done
     #done
 }
 # --

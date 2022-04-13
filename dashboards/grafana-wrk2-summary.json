@@ -248,7 +248,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.5\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.5\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -342,7 +342,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.5\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.5\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -436,7 +436,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.5\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.5\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -530,7 +530,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.75\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.75\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -624,7 +624,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.75\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.75\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -718,7 +718,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.75\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.75\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -812,7 +812,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -906,7 +906,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -1000,7 +1000,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -1094,7 +1094,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -1188,7 +1188,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -1282,7 +1282,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -1376,7 +1376,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.999\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.999\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -1470,7 +1470,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.999\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.999\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -1564,7 +1564,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.999\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.999\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -1658,7 +1658,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9999\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9999\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -1752,7 +1752,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9999\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9999\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -1846,7 +1846,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9999\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9999\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -1940,7 +1940,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99999\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99999\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -2034,7 +2034,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99999\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99999\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -2128,7 +2128,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99999\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99999\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -2222,7 +2222,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"1.0\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"1.0\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -2316,7 +2316,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"1.0\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"1.0\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -2411,7 +2411,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"1.0\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"1.0\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -2523,7 +2523,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.5\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.5\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -2617,7 +2617,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.75\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.75\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -2711,7 +2711,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -2805,7 +2805,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -2899,7 +2899,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.999\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.999\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -2993,7 +2993,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9999\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9999\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -3087,7 +3087,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99999\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99999\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -3181,7 +3181,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"1.0\",exported_job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"1.0\",job=\"bare-metal\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -3300,7 +3300,7 @@
             "dateFormat": "YYYY-MM-DD HH:mm:ss",
             "decimals": 2,
             "mappingType": 1,
-            "pattern": "(Time|exported_instance|end|start)",
+            "pattern": "(Time|instance|end|start)",
             "thresholds": [],
             "type": "hidden",
             "unit": "short"
@@ -3308,7 +3308,7 @@
         ],
         "targets": [
           {
-            "expr": "max(wrk2_benchmark_summary_latency_ms{exported_job=\"bare-metal\",requested_rps=\"$rps\", p=\"1.0\",source_run!~\"$exclude_runs\"}) by (exported_instance,start,end,source_run,value)",
+            "expr": "max(wrk2_benchmark_summary_latency_ms{job=\"bare-metal\",requested_rps=\"$rps\", p=\"1.0\",source_run!~\"$exclude_runs\"}) by (instance,start,end,source_run,value)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -3386,7 +3386,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.5\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.5\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -3480,7 +3480,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.75\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.75\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -3574,7 +3574,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -3668,7 +3668,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -3762,7 +3762,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.999\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.999\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -3856,7 +3856,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9999\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9999\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -3950,7 +3950,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99999\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99999\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -4044,7 +4044,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"1.0\",exported_job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"1.0\",job=\"svcmesh-linkerd\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -4163,7 +4163,7 @@
             "dateFormat": "YYYY-MM-DD HH:mm:ss",
             "decimals": 2,
             "mappingType": 1,
-            "pattern": "(Time|exported_instance|end|start)",
+            "pattern": "(Time|instance|end|start)",
             "thresholds": [],
             "type": "hidden",
             "unit": "short"
@@ -4171,7 +4171,7 @@
         ],
         "targets": [
           {
-            "expr": "max(wrk2_benchmark_summary_latency_ms{exported_job=\"svcmesh-linkerd\",requested_rps=\"$rps\", p=\"1.0\",source_run!~\"$exclude_runs\"}) by (exported_instance,start,end,source_run,value)",
+            "expr": "max(wrk2_benchmark_summary_latency_ms{job=\"svcmesh-linkerd\",requested_rps=\"$rps\", p=\"1.0\",source_run!~\"$exclude_runs\"}) by (instance,start,end,source_run,value)",
             "format": "table",
             "hide": false,
             "instant": true,
@@ -4249,7 +4249,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.5\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.5\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -4343,7 +4343,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.75\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.75\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -4437,7 +4437,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -4531,7 +4531,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -4625,7 +4625,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.999\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.999\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -4719,7 +4719,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9999\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.9999\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -4813,7 +4813,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99999\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"0.99999\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -4907,7 +4907,7 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"1.0\",exported_job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
+            "expr": "wrk2_benchmark_summary_latency_ms{requested_rps=\"$rps\",p=\"1.0\",job=\"svcmesh-istio\",source_run!~\"$exclude_runs\"}",
             "format": "time_series",
             "instant": false,
             "legendFormat": "Run {{source_run}}",
@@ -5026,7 +5026,7 @@
             "dateFormat": "YYYY-MM-DD HH:mm:ss",
             "decimals": 2,
             "mappingType": 1,
-            "pattern": "(Time|exported_instance|end|start)",
+            "pattern": "(Time|instance|end|start)",
             "thresholds": [],
             "type": "hidden",
             "unit": "short"
@@ -5034,7 +5034,7 @@
         ],
         "targets": [
           {
-            "expr": "max(wrk2_benchmark_summary_latency_ms{exported_job=\"svcmesh-istio\",requested_rps=\"$rps\", p=\"1.0\",source_run!~\"$exclude_runs\"}) by (exported_instance,start,end,source_run,value)",
+            "expr": "max(wrk2_benchmark_summary_latency_ms{job=\"svcmesh-istio\",requested_rps=\"$rps\", p=\"1.0\",source_run!~\"$exclude_runs\"}) by (instance,start,end,source_run,value)",
             "format": "table",
             "hide": false,
             "instant": true,

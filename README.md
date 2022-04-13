@@ -32,7 +32,7 @@ Server version: unavailable
 kubectl create namespace monitoring
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm upgrade -i prometheus prometheus-community/prometheus \
-    --namespace prometheus \
+    --namespace monitoring \
     --set alertmanager.persistentVolume.storageClass="gp2",server.persistentVolume.storageClass="gp2"
 
 
@@ -53,7 +53,8 @@ helm install grafana grafana/grafana \
     --namespace monitoring \
     --set persistence.storageClassName="gp2" \
     --set persistence.enabled=true \
-    --set adminPassword='EKS!sAWSome' \   # <- Just for tesing !!!!!!!! You can change it for another value
+    --set adminPassword='EKS!sAWSome' \
+    --set service.type=LoadBalancer \
     --values ~/Desktop/grafana.yaml
 
 ### Verfiy Prometheus & Grafana 
@@ -182,6 +183,8 @@ $ for i in $(seq 10) ; do \
 3. Upload the dashboard:
    ```
    $ cd dashboard
-   dashboard $ ./upload_dashboard.sh "[API KEY]" grafana-wrk2-cockpit.json localhost:3000
+   $ API_KEY_G="YOUR VALUE"
+   $ ./upload_dashboard.sh "${API_KEY_G}" grafana-wrk2-cockpit.json localhost:3000
+   $ ./upload_dashboard.sh "${API_KEY_G}" grafana-wrk2-summary.json localhost:3000
    ```
 

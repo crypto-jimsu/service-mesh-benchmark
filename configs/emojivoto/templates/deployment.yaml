@@ -64,6 +64,9 @@ spec:
     spec:
       nodeSelector:
         role: workload
+      tolerations:
+      - key: "worload"
+        operator: "Exists"
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
@@ -109,6 +112,9 @@ spec:
     spec:
       nodeSelector:
         role: workload
+      tolerations:
+      - key: "worload"
+        operator: "Exists"
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
